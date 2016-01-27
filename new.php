@@ -8,6 +8,24 @@
   $dbh = new PDO($dsn,$user,$password);
   $dbh->query('SET NAMES utf8');
 
+//--SQL---------------------------------------------------
+  $sql = 'SELECT * FROM `areas` WHERE 1';
+  $stmt = $dbh->prepare($sql);
+  $stmt->execute();
+  
+
+//--Preparation of fetch description---------------------------
+  $areas = array();
+
+  while(1){
+    $rec = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if($rec == false){
+      break;
+    }
+    $areas[] = $rec; 
+  }
+
 //--INSERT of inputed infomation to friends--------------------
   if(isset($_POST) && !empty($_POST)){
 
@@ -96,10 +114,9 @@
                         <option value="0">出身地を選択</option>                      
                   
                   <?php
-                    include 'index.php';
-                    foreach ($kenmei as $vkenmei) {
+                    foreach ($friends as $friend) {
                   ?>
-                        <option value="<?php echo $vkenmei['area_id']; ?>" ><?php echo $vkenmei['area_name']; ?></option>
+                        <option value="<?php echo $friend['area_id']; ?>" ><?php echo $friend['area_name']; ?></option>
                   <?php 
                     }
                   ?>

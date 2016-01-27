@@ -14,42 +14,19 @@
   
 
 //--Preparation of fetch description---------------------------
-  $kenmei = array();
+  $areas = array();
 
   while(1){
-    $rec1 = $stmt->fetch(PDO::FETCH_ASSOC);
+    $rec = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if($rec1 == false){
+    if($rec == false){
       break;
     }
-    $kenmei[] = $rec1; 
+    $areas[] = $rec; 
   }
-
-//--SELECT of numbers in each area-----------------------------
-  $sql = "SELECT `area_id` FROM `friends` WHERE 1";
-  $stmt = $dbh->prepare($sql);
-  $stmt->execute();
-
-  $person = array();
-
-
-  while(1){
-    $rec3 = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if($rec3 == false){
-      break;
-    }
-
-    $person[] = $rec3;
-
-  }
-//  var_dump($person);
-   
-  foreach ($person as $key => $value) {
-    
-  }  
 
     $dbh = null;
+
 ?>
 
 
@@ -119,11 +96,11 @@
             <?php
             //--OUTPUT----------------------------------------------------
             
-              foreach ($kenmei as $vkenmei){
+              foreach ($areas as $area){
             ?>
                 <tr>
-                  <td><div class="text-center"><?php echo $vkenmei['area_id']; ?></div></td>
-                  <td><div class="text-center"><a href="show.php?area_id=<?php echo $vkenmei['area_id']; ?>"><?php echo $vkenmei['area_name']?></a></div></td>
+                  <td><div class="text-center"><?php echo $area['area_id']; ?></div></td>
+                  <td><div class="text-center"><a href="show.php?area_id=<?php echo $area['area_id']; ?>"><?php echo $area['area_name']?></a></div></td>
                   <td><div class="text-center">3</div></td> 
                 </tr>
 

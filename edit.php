@@ -8,14 +8,14 @@ $dbh->query('SET NAMES utf8');
 
 //--SELECT of friend_id-------------------------------
 $friend_id = $_GET['friend_id'];
+//var_dump($friend_id);
 
 $sql = 'SELECT * FROM `friends` WHERE `friend_id`='.$friend_id;
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 
 $friends = $stmt->fetch(PDO::FETCH_ASSOC);
-//var_dump($friends);
-
+//var_dump($sql);
 
 //--SELECT of area_name-------------------------------
 $sql = 'SELECT * FROM `areas` WHERE 1';
@@ -35,12 +35,20 @@ while(1){
   $areas[] = $rec;
 
 }
+var_dump($friend_id);
 
+//--UPDATE of friends---------------------------------
+if(isset($_POST) && !empty($_POST)){
+  $sql = "UPDATE `friends` SET `friend_name`='".$_POST['friend_name']."',`area_id`='".$_POST['area_id']."',`gender`='".$_POST['gender']."',`age`='".$_POST['age']."',`modified`='now()' WHERE `friend_id`=".$friend_id;
+  $stmt = $dbh->prepare($sql);
+  $stmt->execute();
 
+  var_dump($sql);
+
+  header('Location: index.php');
+}
+$dbh = null;
 ?>
-
-
-
 
 
 
@@ -94,7 +102,8 @@ while(1){
     <div class="row">
       <div class="col-md-4 content-margin-top">
         <legend>友達の編集</legend>
-        <form method="post" action="edit.php" class="form-horizontal" role="form">
+
+        <form method="post" action="edit.php?friend_id=<?php echo $friend_id;?>" class="form-horizontal" role="form">
             <!-- 名前 -->
             <div class="form-group">
               <label class="col-sm-2 control-label">名前</label>

@@ -29,19 +29,19 @@
 
   while(1){
 
-    $rec2 = $stmt->fetch(PDO::FETCH_ASSOC);
+    $rec = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if($rec2 == false){
+    if($rec == false){
       break;
     }
 
-    if($rec2['gender'] == 1){
+    if($rec['gender'] == 1){
       $male++;
-    }else if($rec2['gender'] == 2){
+    }else if($rec['gender'] == 2){
       $female++;
     }
 
-    $friends[] = $rec2;
+    $friends[] = $rec;
 
   }
 
