@@ -8,7 +8,7 @@
   $dbh->query('SET NAMES utf8');
 
 //--SQL---------------------------------------------------
-  $sql = 'SELECT * FROM `areas` WHERE 1';
+  $sql = 'SELECT `areas`.`area_id`, `areas`.`area_name`, COUNT(`friends`.`friend_id`) AS friends_cnt FROM `areas` LEFT OUTER JOIN `friends` ON `areas`.`area_id` = `friends`.`area_id` WHERE 1 GROUP BY `areas`.`area_id`';
   $stmt = $dbh->prepare($sql);
   $stmt->execute();
   
@@ -25,8 +25,7 @@
     $areas[] = $rec; 
   }
 
-    $dbh = null;
-
+  $dbh = null;
 ?>
 
 
@@ -54,6 +53,9 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+
+
   </head>
   <body>
   <nav class="navbar navbar-default navbar-fixed-top">
@@ -101,7 +103,7 @@
                 <tr>
                   <td><div class="text-center"><?php echo $area['area_id']; ?></div></td>
                   <td><div class="text-center"><a href="show.php?area_id=<?php echo $area['area_id']; ?>"><?php echo $area['area_name']?></a></div></td>
-                  <td><div class="text-center">3</div></td> 
+                  <td><div class="text-center"><?php echo $area['friends_cnt']; ?></div></td> 
                 </tr>
 
             <?php

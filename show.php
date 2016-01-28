@@ -45,6 +45,21 @@
 
   }
 
+
+//--SQL for DELETE-------------------------------------------
+  if(isset($_GET['action']) && !empty($_GET['action'])){
+
+    if($_GET['action'] == 'delete'){
+
+      $sql = 'DELETE FROM `friends` WHERE `friend_id` ='.$_GET['friend_id'];
+      $stmt = $dbh->prepare($sql);
+      $stmt->execute();
+
+      header('Location:index.php');
+    }
+
+  }
+
   $dbh = null;
 
 ?>
@@ -74,6 +89,19 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <script type="text/javascript">
+      function destroy(friend_id){
+        if(confirm('削除しますかー？？')){
+          location.href = 'show.php?action=delete&$friend_id=' + friend_id;
+          return true;
+        }else {
+          return false;
+        }
+      }    
+
+
+    </script>
 
   </head>
   <body>
@@ -123,7 +151,7 @@
               <td>
                 <div class="text-center">
                   <a href="edit.php?friend_id=<?php echo $friend['friend_id']; ?>"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                  <a href="javascript:void(0);" onclick="destroy();"><i class="fa fa-trash"></i></a>
+                  <a href="#" onclick="destroy(<?php echo $friend['friend_id']; ?>);"><i class="fa fa-trash"></i></a>
                 </div>
               </td>
             </tr>
