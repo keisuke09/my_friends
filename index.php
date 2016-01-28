@@ -24,7 +24,32 @@
     }
     $areas[] = $rec; 
   }
+//--SQL for serching name--------------------------------------
 
+  $friends = array();
+
+  if(isset($_POST) && !empty($_POST)){
+    $sql = "SELECT * FROM `friends` WHERE `friend_name`LIKE '%".$_POST['search_name']."%'";
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+
+    while(1){
+      $rec = $stmt->fetch(PDO::FETCH_ASSOC);
+      
+      if($rec == false){
+        break;
+      }
+
+      $friends[] = $rec; 
+
+    }
+  }
+//var_dump($_POST['search_name']);
+//var_dump($friends);
+
+
+
+//--End of SQL-------------------------------------------------
   $dbh = null;
 ?>
 
@@ -83,6 +108,45 @@
   <div class="container">
     <div class="row">
       <div class="col-md-4 content-margin-top">
+
+      <legend>名前検索</legend>
+        <form method="post" action="index.php" class="form-horizontal" role="form">
+          <input type="text" name="search_name" placeholder="検索名" value="">
+          <input type="submit" class="btn btn-default" value="検索">
+        </form><br /><br />
+
+        <table class="table table-striped table-hover table-condensed">
+          <thead>
+            <tr>
+              <?php 
+              if(isset($_POST) && !empty($_POST)){
+              ?>
+                <th><div class="text-center">名前</div></th>
+                <th><div class="text-center"></div></th>
+              <?php 
+              }
+              ?>
+            </tr>
+          </thead>
+
+          <tbody>  
+
+          <?php
+            foreach($friends as $friend){
+          ?>
+
+            <tr>
+              <td><div class="text-center"><?php echo $friend['friend_name']; ?></div></td>
+            </tr>
+
+          <?php
+            }
+          ?>
+            
+          </tbody>
+        </table>
+
+      <br />
       <legend>都道府県一覧</legend>
         <table class="table table-striped table-bordered table-hover table-condensed">
           <thead>

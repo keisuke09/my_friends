@@ -60,6 +60,20 @@
 
   }
 
+//--SQL for AVERAGE------------------------------------------
+  //--MEN--
+  $sql = 'SELECT TRUNCATE(AVG(`age`), 2) AS average_man FROM `friends` WHERE `gender`=1 AND  `area_id`='.$area_id;
+  $stmt = $dbh->prepare($sql);
+  $stmt->execute();
+  $average_man = $stmt->fetch(PDO::FETCH_ASSOC);  
+  
+  //--WOMEN--
+  $sql = 'SELECT TRUNCATE(AVG(`age`), 2) AS average_woman FROM `friends` WHERE `gender`=2 AND  `area_id`='.$area_id;
+  $stmt = $dbh->prepare($sql);
+  $stmt->execute();
+  $average_woman = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
   $dbh = null;
 
 ?>
@@ -131,7 +145,10 @@
     <div class="row">
       <div class="col-md-4 content-margin-top">
       <legend><?php echo $area['area_name']; ?>の友達</legend>
-      <div class="well">男性：<?php echo $male; ?>名　女性：<?php echo $female; ?>名</div>
+      <div class="well">男性：<?php echo $male; ?>名　女性：<?php echo $female; ?>名 
+        <br />平均年齢　男性：<?php if($average_man['average_man'] == 0){echo 0;}else{echo $average_man['average_man'];} ?>才　
+        女性：<?php if($average_woman['average_woman'] == 0){echo 0;}else{echo $average_woman['average_woman'];} ?>才
+      </div>
         <table class="table table-striped table-hover table-condensed">
           <thead>
             <tr>
